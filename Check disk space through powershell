@@ -1,0 +1,7 @@
+$cred = get-Credential
+$computers = get-Content c:\neeraj\complist.txt
+ 
+foreach ( $item in $computers) { 
+get-WmiObject win32_logicaldisk -Credential $cred -ComputerName $item -Filter "Drivetype=3"  |  
+ft SystemName,DeviceID,VolumeName,@{Label="Total SIze";Expression={$_.Size / 1gb -as [int] }},@{Label="Free Size";Expression={$_.freespace / 1gb -as [int] }} -autosize 
+} 
