@@ -1,0 +1,14 @@
+$user = 'abc\testadmin'
+$pass = 'abcpassword'
+$login = New-Object System.Management.Automation.PSCredential -ArgumentList @($user,(ConvertTo-SecureString -String $pass -AsPlainText -Force))
+
+#In above line we have created credential to login which has access to remote location
+#make sure that psremoting is enable at both side
+#make sure abc\testadmin has right permission on 192.168.1.100
+
+
+start-process \\192.168.1.100\hello.bat -Credential $login #it will trigger hello.bat at remote location
+
+Invoke-Command -ComputerName testcomputer1 -ScriptBlock { \\192.168.1.100\bye.bat } -Credential  $login #it will trigger bye.bat at remote location
+
+Invoke-Command -ComputerName testcomputer1 -ScriptBlock { \\192.168.1.100\InstallHyper-V.ps1 } -Credential  $login #it will trigger .ps1 file at remote location
