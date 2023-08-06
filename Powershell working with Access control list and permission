@@ -1,0 +1,22 @@
+Param($Server = 'jocket-test-server')
+  $ShareSecurity = Get-WmiObject win32_LogicalShareSecuritySetting -ComputerName $Server
+  foreach($Share in $ShareSecurity)
+   {
+    $sharenames = $Share.Name
+    $ACLS = $Share.GetSecurityDescriptor().Descriptor.DACL
+    foreach($ACL in $ACLS)
+     {
+     $User = $ACL.Trustee.Name
+     switch ($ACL.AccessMask)
+       {
+       2032127   {$Perm = “Full Control”}
+       1245631   {$Perm = “Change”}
+       1179817   {$Perm = “Read”}
+       }
+     $myObj = “” |Select-Object ShareName,User,Permission, NTFS_User, NTFS_Rights
+     $myObj.ShareName = $sharenames
+     $myObj.User = $User
+     $myObj.Permission = $Perm
+     $myObj
+     }
+    }
