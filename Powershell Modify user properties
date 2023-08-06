@@ -1,0 +1,11 @@
+$objuser=[ADSI]"LDAP://cn=user1,ou=test,dc=tech-jockey,dc=com"
+$objuser.Put("Samaccountname","user1")
+$objuser.Put("givenname","myuser")
+$objuser.Put("initials","raj")
+$objuser.Put("sn","User")
+$objuser.Put("displayname","new user")
+$objuser.Put("description","user created by ldap")
+$objuser.Put("telephoneNumber","8888888888")
+$objuser.Put("mail","abcd@gmail.com")
+$objuser.Put("wwwhomepage","http://www.google.com")
+$objuser.setinfo()
