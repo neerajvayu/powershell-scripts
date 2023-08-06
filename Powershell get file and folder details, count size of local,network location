@@ -1,0 +1,31 @@
+set-location D:\data #set the location from where need to perform command
+#below command will list details of all the folder and files which are there in d:\data it will show last writetime ,creation time etc
+get-childitem *.* | sort-object @{Expression={$_.LastWriteTime-$_.CreationTime}; Ascending=$false} | select-object LastWriteTime, CreationTime, Name, Length >> D:\status.txt
+
+
+set-location \\192.168.1.100 #doing same to shared location
+get-childitem *.* | sort-object @{Expression={$_.LastWriteTime-$_.CreationTime}; Ascending=$false} | select-object LastWriteTime, CreationTime, Name, Length >> D:\netstatus.txt
+
+
+set-location D:\countfile
+$fileCount=(get-childitem).count #it will count no of item at specific location and share output in txt file
+$fileCount >> D:\statuscount.txt
+
+
+
+
+set-location D:\networkshare #below script will show details with size in MB and other details
+$abs=Get-ChildItem |
+Format-Table  -AutoSize Mode, LastWriteTime, Name,
+     @{ Label="Length"; alignment="Left";
+       Expression={
+                    if($_.PSIsContainer -eq $True)
+                        {((New-Object -com  Scripting.FileSystemObject).GetFolder( $_.FullName).Size)/1024/1024
+   echo "MB"
+   }
+
+                    else
+                        {$_.Length}
+                  }
+     };
+$abs >> D:\statusfol\size.txt
