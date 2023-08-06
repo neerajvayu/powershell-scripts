@@ -1,0 +1,3 @@
+$global:ie = New-Object -com "InternetExplorer.Application"
+$global:ie.Navigate("http://192.168.1.100/dummy_site")
+$global:ie.visible = $true
