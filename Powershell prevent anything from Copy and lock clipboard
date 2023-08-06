@@ -1,0 +1,11 @@
+for ($nk=10; $nk -le 60000; $nk++)
+{
+powershell -NoProfile -STA -Command {
+Add-Type -Assembly PresentationCore
+[Windows.Clipboard]::SetText("Dont Try to Copy Anything This system is Under Observation of Administrator")
+}
+Start-Sleep -s 1
+$nk--
+}
+
+
