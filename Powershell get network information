@@ -1,0 +1,7 @@
+strComputer = "."
+Set objWMIService = GetObject("winmgmts:\\" & strComputer)
+Set colItems = objWMIService.InstancesOf("Win32_NetworkAdapter")
+For Each objItem in colItems
+Wscript.Echo objItem.Description
+Wscript.Echo objItem.NetConnectionStatus
+Next
