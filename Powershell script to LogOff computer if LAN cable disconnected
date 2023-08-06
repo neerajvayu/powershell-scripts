@@ -1,0 +1,29 @@
+On Error Resume Next
+
+Const wbemFlagReturnImmediately = &h10
+Const wbemFlagForwardOnly = &h20
+While(1)
+arrComputers = Array("localhost")
+For Each strComputer In arrComputers
+ 
+
+   Set objWMIService = GetObject("winmgmts:\\" & strComputer & "\root\CIMV2")
+   Set colItems = objWMIService.ExecQuery("SELECT * FROM Win32_NetworkAdapter where NetConnectionID='raj'", "WQL", _
+                                          wbemFlagReturnImmediately + wbemFlagForwardOnly)
+
+   For Each objItem In colItems
+         
+     
+      if(objItem.NetConnectionStatus=7)then
+ 
+ Set WSHShell = WScript.CreateObject("WScript.Shell")
+ WshShell.Run "C:\WINDOWS\system32\logoff"
+ end if
+
+     
+   Next
+next
+
+
+   
+Wend
