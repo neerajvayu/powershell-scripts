@@ -1,0 +1,7 @@
+[System.Xml.XmlDocument]$file = new-object System.Xml.XmlDocument
+$file.load("D:\baba\Launcher.en-US.resx")
+$xml_peoples= $file.SelectNodes("/root/data[@name='CompanyName']")
+foreach ($person in $xml_peoples) {
+   $person.value="baba"
+   }
+   $file.Save("D:\baba\Launcher.en-US.resx")
