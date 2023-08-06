@@ -1,0 +1,11 @@
+clear
+$ErrorActionPreference = "SilentlyContinue"
+$i=1
+while($i -le 255)
+{
+$ipp=$i.ToString()
+$pre="192.168.1." + $ipp
+$addr=$pre
+[System.Net.Dns]::GetHostbyAddress($addr) |select AddressList, Hostname
+$i=$i+1
+}
