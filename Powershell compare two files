@@ -1,0 +1,11 @@
+$file1=import-csv -path "C:\tech-jockey\test1.csv"
+$file2=import-csv -path "C:\tech-jockey\test2.csv"
+$r=Compare($file1 $file2)
+if ($r -eq 0)
+{
+write-host "equal"
+}
+else
+{
+write-host "not equal"
+}
