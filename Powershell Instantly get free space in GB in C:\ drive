@@ -1,0 +1,5 @@
+Disable system hibernation
+If you don’t use Hibernation but it is activated, you can recover some few gigabytes. The file C:\hyberfil.sys is usually pretty huge (about 75% of the total amount of RAM) so no need to keep that kind of file, especially if you got a lot of RAM. To delete this file, simply disable hibernation in the Advanced Power Settings in the Control Panel or by typing this command :
+
+1
+powercfg -h off
