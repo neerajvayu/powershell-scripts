@@ -1,0 +1,5 @@
+$strClass="organizationalUnit"
+$StrOUName="ou=test"
+$objADSI=[ADSI]"LDAP://dc=tech-jockey,dc=com"
+$objOU=$objADSI.create($strClass,$StrOUName)
+$objOU.setInfo()
