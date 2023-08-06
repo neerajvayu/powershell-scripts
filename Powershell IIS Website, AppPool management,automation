@@ -1,0 +1,55 @@
+$strSvr = "test-pc"
+
+    New-PSSession $strSvr
+
+Write-host " starting server connection"
+    Enter-PSSession -ComputerName $strSVR
+
+write-host " ending server connection"
+
+    $strName = "tech-jockey.com"
+    $strUsr=   "tech-jockey.com\jockey"
+    $strPass = "teremeresapne@123"
+    $strPath = "c:\newsite"
+    $strNewURL = ""
+
+    #Load WebAdmin Snap-in if needed.
+    $iisVersion = Get-ItemProperty "HKLM:\software\microsoft\InetStp";
+    if ($iisVersion.MajorVersion -eq 7)
+    {
+        if ($iisVersion.MinorVersion -ge 5)
+        {
+            Import-Module WebAdministration;
+        }        
+        else
+        {
+            if (-not (Get-PSSnapIn | Where {$_.Name -eq "WebAdministration";}))
+            {
+                        Add-PSSnapIn WebAdministration;
+            }
+        }
+    }
+write-host "creating application pool"
+    #Create App Pool
+    $AppPoolName="NewWebsitePool"
+    New-WebAppPool -Name $AppPoolName
+    Set-ItemProperty ("IIS:\AppPools\" + $AppPoolName) -name processModel.identityType -value 3
+    Set-ItemProperty ("IIS:\AppPools\" + $AppPoolName) -name processModel.username -value $strUsr
+
+    Set-ItemProperty ("IIS:\AppPools\" + $AppPoolName) -name processModel.password -value $strPass
+
+   write-host "creating website"
+    #Create Web Site
+    $WebSiteName="NewWebSite"
+    New-Website –Name $WebSiteName –Port 81 –HostHeader $strNewURL –PhysicalPath $strPath
+    Set-ItemProperty ("IIS:\Sites\" + $WebSiteName) -name applicationPool -value $AppPoolName
+    Set-ItemProperty ("IIS:\Sites\" + $WebSiteName) -name ..username -value $strUsr
+    Set-ItemProperty ("IIS:\Sites\" + $WebSiteName) -name ..password -value $strPass
+   write-host "ending connection"
+
+
+    #Exit Remote Session
+    Exit-PSSession
+    Remove-PSSession -ComputerName $strSvr
+Import-Module WebAdministration
+start-website -Name $WebSiteName
