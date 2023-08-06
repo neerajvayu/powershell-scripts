@@ -1,0 +1,7 @@
+#make sure you have HP OA API is installed
+$con = Connect-HPOA -OA 172.16.10.20 -Username tech-jockey-Password tech-jock-pass
+$ssta = Get-HPOAServerStatus -Bay All $con
+$ssta.Blade | Select-Object -Property Bay, Power, CurrentWattageUsed, Health, UnitIdentificationLED, VirtualFan | Format-Table *
+Disconnect-HPOA $con
+Find-HPOA -Range 172.16.10.10-254 -Role Active
+$ssta.Hostname
