@@ -1,0 +1,16 @@
+Real Life Scenario
+I need to change 300 something computers/servers to where the Deny Access from the network includes three users.
+Well that’s simple- there is a group policy item for that! Perfect..however sometimes you may not have the appropriate rights to administer group policy, maybe you searched and found this article because of that?
+Anyways- this is the powershell way to automate!
+For this example, I’ve used a list of computers instead of the AD because I was given a list.
+
+
+$computers = Get-Content c:\computerlist.txt
+
+foreach ($computer in $computers)
+{
+ntrights.exe -m \\$computer -u firstUser +r SeDenyNetworkLogonRight
+ntrights.exe -m \\$computer -u secondUser +r SeDenyNetworkLogonRight
+ntrights.exe -m \\$computer -u thirdUser +r SeDenyNetworkLogonRight
+}
+
