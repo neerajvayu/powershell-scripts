@@ -1,0 +1,11 @@
+
+SET user=abc\testadmin
+SET pass=mypass
+
+sc \\testcomputer123.tech-jockey.com create "DummyAspService" binpath= D:\DummyAspService\DummyAspService.exe start= auto OBJ= %user% PASSWORD= %pass%
+
+
+sc \\testcomputer123.tech-jockey.com START "DummyAspService" OBJ= %user% PASSWORD= %pass%
+
+
+sc \\testcomputer123.tech-jockey.com Delete "DummyAspService" OBJ= %user% PASSWORD= %pass%
