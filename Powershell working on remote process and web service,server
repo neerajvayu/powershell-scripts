@@ -1,0 +1,15 @@
+$user = 'abc\testadmin'
+$pass = 'passtest'
+$login = New-Object System.Management.Automation.PSCredential -ArgumentList @($user,(ConvertTo-SecureString -String $pass -AsPlainText -Force))
+
+#in below code we are bypassing excution policy to prevent popup
+Invoke-Command -ComputerName testcomputer123 -ScriptBlock {set-executionpolicy bypass –force;\\testcomputer123\execfiles\stopkill.ps1} -Credential $login
+
+
+#In stopkill.ps1 we will write below code to start and stop website,not only website we can even kill any process or and service even shutdown machine
+
+#stopkill.ps1
+Import-Module WebAdministration
+kill -Name "TestASPDOTNET_DUMMY_Service" -Force
+stop-website -Name "Default web Site"
+start-website -Name "Default web Site"
