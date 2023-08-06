@@ -1,0 +1,6 @@
+$strclass="User"
+$strname="cn=user1"
+$objadsi=[ADSI]"LDAP://ou=test,dc=tech-jockey,dc=com"
+$objuser=$objadsi.create($strclass,$strname)
+$objuser.Put("sAMAccountName","user1")
+$objuser.setinfo()
