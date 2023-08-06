@@ -1,0 +1,8 @@
+#creating scheduled task to sync folder every one minute
+schtasks /create /RU jockeygrp\baba /RP Ethic@@!!! /TN newtesttask /TR "robocopy d:\datasrc d:\datadest" /sc MINUTE /mo 01
+
+#for delete this task
+
+schtasks /delete /TN "newtesttask" /f
+
+schtasks /create /RU jockeygrp\baba /RP Ethic@@!!! /TN newtesttask /TR "robocopy d:\datasrc d:\datadest /copyall /mir" /sc MINUTE /mo 01
