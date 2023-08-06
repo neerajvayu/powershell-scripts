@@ -1,0 +1,16 @@
+ 
+$smtpserver = "your-exchange-server" 
+ 
+$to = "neerajvayu123@gmail.com" 
+ 
+$from = "neerajvayu123@gmail.com" 
+ 
+$subject = "First email"  
+ 
+$body = "HI $to ,
+" 
+ 
+$body += "How are you doing, i am testing email function 
+" 
+  
+send-MailMessage -SmtpServer $smtpserver -To $to -From $from -Subject $subject -Body $body -BodyAsHtml
