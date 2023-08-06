@@ -1,0 +1,19 @@
+clear
+$ErrorActionPreference = "SilentlyContinue"
+$net=2
+while($net -le 3)
+{
+$i=2
+while($i -le 254)
+{
+$ipp=$i.ToString()
+$ntt=$net.ToString()
+$pre="192.168."+$ntt+"." + $ipp
+$mn=[Net.IPAddress]::Parse($pre)
+write-host $mn
+query session /server:$mn
+echo "================"
+$i=$i+1
+}
+$net=$net+1
+}
