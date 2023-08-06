@@ -1,0 +1,1 @@
+Get-counter "\Processor(*)\% Processor Time" -SampleInterval 1 -MaxSamples 20 | Export-counter -Path c:\data1.blg
