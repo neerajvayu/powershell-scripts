@@ -1,0 +1,197 @@
+#########################################################################################################
+###### Disclaimer:This tool will give you basic status of Zerto environment #############################
+###### Author:Neeraj Jha ################################################################################
+###### Version:1.2.0.0   ################################################################################
+#########################################################################################################
+
+clear
+function schoice()
+{
+echo ""
+echo "                Press 1 to see report on Screen"
+echo "                Press 2 to get report in Excel Sheet"
+echo ""
+
+$sch=read-host "                               Enter Your Choice"
+    if($sch -eq 1)
+    {
+        renderscr
+    }
+        elseif($sch -eq 2)
+        {
+            objectexl
+        }
+            else
+            {
+                echo "You have choosen wrong item"
+                cont_nu
+                Read-Host "Press Enter key to Exit"
+            }
+
+}
+
+function cont_nu()
+{
+echo ""
+echo "========================================================================="
+
+$sch=read-host "                               Press [ Y/N ] to continue..."
+    if($sch -eq 'y')
+    {
+        schoice
+    }
+
+       
+}
+
+function renderscr()
+{
+clear
+echo ""
+write-host "Welcome to tech-jockey anlytics report for Zerto"
+echo ""
+write-host "                                 Welcome " $TJUsername "                                        " -ForegroundColor DarkRed -BackgroundColor Green
+echo ""
+
+write-host ""
+echo ""
+echo ""
+write-host "                                      "-ForegroundColor DarkRed -BackgroundColor Magenta
+write-host "          Zerto Status Report         " -ForegroundColor DarkRed -BackgroundColor Green
+write-host "                                      "-ForegroundColor DarkRed -BackgroundColor Magenta
+write-host ""
+write-host "    Healthy VPGs count: " $web_json.healthyVpgsCount
+write-host "    Alerted VPGs count: " $web_json.alertedVpgsCount
+write-host "    Faulted VPGs count: " $web_json.faultedVpgsCount
+write-host "    Average Actual RPO: " $web_json.averageActualRpo
+write-host "Average Configured RPO: " $web_json.averageConfiguredRpo
+write-host "           No of Sites: " $web_json.sitesCount
+write-host "            No of VPGs: " $web_json.vpgsCount
+write-host "   No of protected VMs: " $web_json.vmsCount
+write-host "          No of Alerts: " $web_json.alertsCount
+write-host "           No of Tasks: " $web_json.tasksCount
+write-host "  Total Protected data: " $f_tot_size "TB"
+echo ""
+echo ""
+echo ""
+echo ""
+echo "                  Tool Developed by Neeraj, tech-jockey"
+echo ""
+echo ""
+echo ""
+echo ""
+cont_nu
+
+}
+
+function objectexl()
+{
+
+    if(!(Test-Path -Path "c:\zerto_rep" ))
+    {
+    echo "Creating C:\Zerto_rep directory..."
+       New-Item -ItemType directory -Path c:\zerto_rep
+    }
+$Excel = New-Object -Com Excel.Application
+$Excel.visible = $False
+$Excel = $Excel.Workbooks.Add()
+$Addsheet = $Excel.sheets.Add()
+$Sheet = $Excel.WorkSheets.Item(1)
+$Sheet.Cells.Item(2,1) = “Healthy VPGs count”
+$Sheet.Cells.Item(3,1) = “Alerted VPGs count”
+$Sheet.Cells.Item(4,1) = “Faulted VPGs count”
+$Sheet.Cells.Item(5,1) = “Average Actual RPO”
+$Sheet.Cells.Item(6,1) = “Average Configured RPO”
+$Sheet.Cells.Item(7,1) = “No of Sites”
+$Sheet.Cells.Item(8,1) = “No of VPGs”
+$Sheet.Cells.Item(9,1) = “No of protected VMs”
+$Sheet.Cells.Item(10,1) = “No of Alerts”
+$Sheet.Cells.Item(11,1) = “No of Tasks”
+$Sheet.Cells.Item(12,1) = “Total Protected data [TB]”
+$Sheet.Cells.Item(1,1) = “Zerto Item Name”
+$Sheet.Cells.Item(1,2) = “Item Value”
+$Sheet.Cells(1,1).Interior.ColorIndex = 50
+$Sheet.Cells(1,2).Interior.ColorIndex = 22
+$dash="$healthyVpgsCount","$alertedVpgsCount","$faultedVpgsCount","$averageActualRpo","$averageConfiguredRpo","$sitesCount","$vpgsCount","$vmsCount","$alertsCount","$tasksCount","$tpsize"
+$WorkBook = $Sheet.UsedRange
+$WorkBook.Font.Bold = $True
+$WorkBook.Borders.ColorIndex =40
+$R = 2
+$C = 2
+    foreach($D in $dash)
+    {
+   
+            $Sheet.Cells.Item($R,$C) = $D
+     
+            $R = $R + 1
+
+    }
+$WorkBook.EntireColumn.AutoFit()
+$dt=get-date
+$day=$dt.Day.ToString()
+$hour=$dt.Hour.ToString()
+$min=$dt.Minute.ToString()
+$month=$dt.Month.ToString()
+$sec=$dt.Second.ToString()
+$yr=$dt.Year.ToString()
+$filename="Zerto_Report_"+$day+"_"+$month+"_"+$yr+"_"+$hour+"_"+$min+"_"+$sec
+$filepath="c:\zerto_rep\"+$filename+".xlsx"
+echo $filepath
+#echo "1"
+$Excel.SaveAs($filepath)
+$excel.Close()
+cont_nu
+}
+function rend()
+{
+clear
+echo ""
+write-host "Welcome to tech-jockey anlytics report for Zerto"
+echo ""
+write-host "                                 Welcome " $TJUsername "                                        " -ForegroundColor DarkRed -BackgroundColor Green
+echo ""
+write-host "Please wait while we establishing session with tech-jockey Zerto host"
+echo ""
+write-host "Establishing connection" -NoNewline
+sleep 1
+write-host " . " -NoNewline
+sleep 1
+write-host " . " -NoNewline
+sleep 1
+write-host " . " -NoNewline
+sleep 1
+write-host " . " -NoNewline
+sleep 1
+write-host " . " -NoNewline
+sleep 1
+write-host " . "
+echo ""
+write-host "Rendering content............................................" -NoNewline
+write-host "[100% Done]"-NoNewline -ForegroundColor DarkRed -BackgroundColor Yellow
+write-host ""
+}
+#Connection cred start=========
+write-host "Welcome to tech-jockey anlytics report for Zerto"
+echo ""
+$TJUsername = Read-Host "Enter your username:"
+$TJSpass = Read-Host "Enter your password:" -AsSecureString
+$TJbstr = [System.Runtime.InteropServices.Marshal]::SecureStringToTJbstr($TJSpass)
+$TJPASS = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($TJbstr)
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12 -bor [System.Net.SecurityProtocolType]::Tls11
+#Getting Zerto Analytics Token
+$body = ‘{“username”: “‘ + $TJUsername + ‘”,”password”:”‘ + $TJPASS + ‘”}’
+$contentType = “application/json”
+$xZertoAnalyticsToken = Invoke-RestMethod -Uri “https://analytics.api.zerto.com/v2/auth/token” -Method POST -Body $body -ContentType $contentType
+#Build authorization header
+$authHeaders = @{“Authorization” = “Bearer ” + $xZertoAnalyticsToken.token}
+#skipping tls cert check
+[System.Net.ServicePointManager]::ServerCertificateValidationCallback = $null
+$web_data=curl -Uri 'https://analytics.api.zerto.com/v2/monitoring' -Headers $authHeaders
+$web_json =$web_data.Content | Out-String | ConvertFrom-Json
+$tot_size=$web_json.protectedDataSize/1024/1024
+$f_tot_size= [math]::Round($tot_size)
+$tpsize = $f_tot_size.ToString()
+rend
+#Connection cred end=========
+#calling the gateway
+schoice
