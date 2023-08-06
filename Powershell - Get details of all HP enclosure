@@ -1,0 +1,11 @@
+Install HP enclosure API tool from below location
+http://www.techazine.com/2014/05/15/hp-released-powershell-for-ilo-control-with-more-to-come/
+
+$con = Connect-HPOA -OA 192.168.1.100 -Username testuser -Password testpass
+$ssta = Get-HPOAServerStatus -Bay All $con
+$ssta.Blade | Select-Object -Property Bay, Power, CurrentWattageUsed, Health, UnitIdentificationLED, VirtualFan | Format-Table *
+Disconnect-HPOA $con
+
+Find-HPOA -Range 192.168.1.100-210 -Role Active
+
+$ssta.Hostname
