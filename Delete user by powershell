@@ -1,0 +1,4 @@
+$strclass="user"
+$strname="cn=user1"
+$objadsi=[ADSI]"LDAP://ou=test,dc=tech-jockey,dc=com"
+$objuser=$objadsi.delete($strclass,$strname)
