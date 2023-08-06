@@ -1,0 +1,88 @@
+clear-host
+Import-module ActiveDirectory
+echo "   Welcome To jockey.com Domain"
+echo ""
+echo ""
+
+echo "Your Options are"
+echo ""
+echo ""
+
+echo "  1.Create New User"
+echo "  2.Create New Group"
+echo "  3.Modify User"
+echo "  4.Modify Group"
+echo "  5.Delete Object"
+echo ""
+echo ""
+$ch=Read-Host "Enter Your Choice "
+if($ch -eq 1)
+{
+
+
+
+ echo ""
+ echo ""
+         $fn=read-host " Enter First Name :"
+  $ln=read-host " Enter Last Name  :"
+ 
+
+ $ll=$ln.length
+
+ if($ll -gt 4)
+ {
+  $fin=$fn.substring(0,1)+$ln.Substring(0,5)
+
+ }
+ else
+ {
+  $fin=$fn.substring(0,1)+$ln
+
+ }
+ 
+ $Strn=$fin
+ $StrName="cn="+$Strn
+ $strClass="User"
+ $objADSI=[ADSI]"LDAP://ou=test,dc=jockey.com,dc=com"
+ $objUser=$objADSI.create($strClass,$StrName)
+
+
+
+$objUser.put("givenName",$fn)
+$objUser.put("sn",$ln)
+
+
+
+$objUser.put("DisplayName",$Strn)
+$objUser.put("description","this is the new user in jockeydomain")
+$objUser.put("physicalDeliveryOfficeName","RQ2")
+$objUser.put("telephoneNumber","8888888888")
+$phn=$Strn+"@jockey.com.com"
+$objUser.put("mail",$phn)
+$objUser.put("wwwHomePage","http://google.com")
+$objUser.put("profilePath","\\london\profiles\myNewUser")
+$objUser.put("scriptPath","logon.vbs")
+$objUser.put("homeDirectory","\\london\users\myUser")
+$objUser.put("homeDrive","H:")
+
+$objUser.SetInfo()
+
+ 
+
+
+
+
+ $objUser.SetInfo()
+
+ $a = new-object -comobject wscript.shell
+ $b = $a.popup("User Created Successfully",0,"jockey.com.com",1)
+}
+else
+{
+$a = new-object -comobject wscript.shell
+ $b = $a.popup("Please Select Correct Option",0,"jockey.com.com",1)
+}
+$objUser.psbase.InvokeSet("AccountDisabled", $False)
+$objUser.SetInfo()
+
+
