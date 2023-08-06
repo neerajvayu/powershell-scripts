@@ -1,0 +1,24 @@
+$srvname= "srv1","srv2","srv3","srv4","srv5"
+
+
+foreach ($item in $srvname)
+
+{
+
+if (test-Connection -ComputerName $Server -Count 3 -Quiet )
+{
+
+write-Host "Server is Pinging "
+       
+}
+
+else
+                   
+{
+
+Write-Warning "Server is not pinging"
+           
+}   
+       
+}
+ 
